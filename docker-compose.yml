@@ -1,0 +1,35 @@
+---
+version: '3'
+services:
+  kafka-proxy:
+    image: grepplabs/kafka-proxy
+    hostname: kafka-proxy
+    container_name: kafka-proxy
+    command: > 
+            server \
+                --bootstrap-server-mapping=b0-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9092,kafka-proxy:9092 \
+                --bootstrap-server-mapping=b1-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9093,kafka-proxy:9093 \
+                --bootstrap-server-mapping=b2-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9094,kafka-proxy:9094 \
+                --bootstrap-server-mapping=b3-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9095,kafka-proxy:9095 \
+                --bootstrap-server-mapping=b4-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9096,kafka-proxy:9096 \
+                --bootstrap-server-mapping=b5-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9097,kafka-proxy:9097 \
+                --bootstrap-server-mapping=b6-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9098,kafka-proxy:9098 \
+                --bootstrap-server-mapping=b7-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9099,kafka-proxy:9099 \
+                --bootstrap-server-mapping=b8-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9100,kafka-proxy:9100 \
+                --bootstrap-server-mapping=b9-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9101,kafka-proxy:9101 \
+                --bootstrap-server-mapping=b10-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9102,kafka-proxy:9102 \
+                --bootstrap-server-mapping=b11-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9103,kafka-proxy:9103 \
+                --bootstrap-server-mapping=b12-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9104,kafka-proxy:9104 \
+                --bootstrap-server-mapping=b13-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9105,kafka-proxy:9105 \
+                --bootstrap-server-mapping=b14-$CONFLUENT_BOOTSTRAP_SERVER,0.0.0.0:9106,kafka-proxy:9106 \
+                --tls-enable --tls-insecure-skip-verify \
+                --sasl-enable \
+                --sasl-username "$CONFLUENT_APIKEY" \
+                --sasl-password "$CONFLUENT_SECRET"
+
+  kafka-client:
+    image: confluentinc/cp-enterprise-kafka:5.3.1
+    container_name: kafka-client
+    entrypoint: /bin/sh -c "sleep 10000000"
+    depends_on:
+      - kafka-proxy
